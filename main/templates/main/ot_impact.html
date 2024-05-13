@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Perform Quantitative SWOT Analysis</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static "css/default_style.css" %}">
+</head>
+<body>
+<h1>Оцените степень влияния возможностей и угроз сторон друг на друга.</h1>
+<h2>Оценка может составлять от -5 до 5. Незаполненные значения будут занулены.</h2>
+<form method="post" action="/ot_impact_out/">
+    {% csrf_token %}
+    <table id="synergy_matrix">
+        <tr>
+            <td rowspan="2" class="header">Факторы, оказывающие влияние</td>
+            <td colspan="{{ ot_weights_len }}" class="header">Факторы, на которые оказывается влияние</td>
+        </tr>
+        <tr>
+            {% for o in o_weights %}
+                <td class="factor">{{ o }}</td>
+            {% endfor %}
+            {% for t in t_weights %}
+                <td class="factor">{{ t }}</td>
+            {% endfor %}
+        </tr>
+        {% for o in o_weights %}
+            <tr>
+                <td class="factor">{{ o }}</td>
+                {% for key in o_weights %}
+                    {% if key == o %}
+                        <td class="empty"></td>
+                    {% else %}
+                        <td><input type="select" size="1" list="weights" name="Ovals{{ forloop.counter }}"></td>
+                    {% endif %}
+                {% endfor %}
+                {% for key in t_weights %}
+                    <td><input type="select" size="1" list="weights" name="Tvals{{ forloop.counter }}"></td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        {% for t in t_weights %}
+            <tr>
+                <td class="factor">{{ t }}</td>
+                {% for key in o_weights %}
+                    <td><input type="select" size="1" list="weights" name="Ovals{{ forloop.counter }}"></td>
+                {% endfor %}
+                {% for key in t_weights %}
+                    {% if key == t %}
+                        <td class="empty"></td>
+                    {% else %}
+                        <td><input type="select" size="1" list="weights" name="Tvals{{ forloop.counter }}"></td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+    <div>
+        <input class="submit_btn" name="finish" type="submit" value="Продолжить анализ">
+    </div>
+    <datalist id="weights">
+        <option value="5">5</option>
+        <option value="4">4</option>
+        <option value="3">3</option>
+        <option value="2">2</option>
+        <option value="1">1</option>
+        <option value="0">0</option>
+        <option value="-1">-1</option>
+        <option value="-2">-2</option>
+        <option value="-3">-3</option>
+        <option value="-4">-4</option>
+        <option value="-5">-5</option>
+    </datalist>
+</form>
+<script>
+    var preset_3p_values = JSON.parse('{{ preset_3p_values_json|safe }}');
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var inputs = [];
+    var presetValues = JSON.parse('{{ preset_3p_values_json|safe }}');
+    Object.keys(presetValues).forEach(function(key) {
+        presetValues[key].forEach(function(value, index) {
+            if (document.getElementsByName(key + (index + 1)).length > 0 ) {
+                inputs.push(document.getElementsByName(key + (index + 1)));
+            }
+        });
+    });
+
+    if (presetValues.length !== 0)   {
+        var halfValsLength = presetValues["Ovals"].length / 2;
+        var combinedValues = [...presetValues['Ovals'], ...presetValues['Tvals']];
+
+        for (let j = 0; j <= halfValsLength; j++) {
+            for (let i = 0; i <= halfValsLength-1; i++) {
+                inputs[j][i].value = combinedValues[0];
+                if (inputs[j][i].value == "undefined") {
+                        inputs[j][i].value = '';
+                    }
+                combinedValues.shift();
+            }
+        }
+    }
+});
+</script>
+</body>
+</html>

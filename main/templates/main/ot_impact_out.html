@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Perform Quantitative SWOT Analysis</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static "css/default_style.css" %}">
+</head>
+<body>
+<h1>Результаты оценки степеней влияния внешних факторов (возможностей и угроз) друг на друга:</h1>
+<h2> </h2>
+{% load custom_tags %}
+<form method="get" action="/possibilities">
+    <table id="synergy_matrix">
+        <tr>
+            <td rowspan="2" class="header">Факторы, оказывающие влияние</td>
+            <td colspan="{{ ot_weights_len }}" class="header">Факторы, на которые оказывается влияние</td>
+        </tr>
+        <tr>
+            {% for key in weights %}
+                <td class="factor">{{ key }}</td>
+            {% endfor %}
+        </tr>
+        {% for i in weights %}
+            <tr>
+                <td class="factor">{{ i }}</td>
+                {% for k in weights %}
+                    {% if k == i %}
+                        <td class="empty"></td>
+                    {% else %}
+                        <td>{{ values|list_index:forloop.counter0|list_index:forloop.parentloop.counter0 }}</td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        <tr>
+            <td>Значение корректировки веса фактора смежным влиянием</td>
+            {% for val in sums %}
+                <td>{{ val }}</td>
+            {% endfor %}
+        </tr>
+    </table>
+    <div>
+        <input class="submit_btn" name="finish" type="submit" value="Продолжить анализ">
+    </div>
+</form>
+</body>
+</html>

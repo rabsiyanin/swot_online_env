@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Perform Quantitative SWOT Analysis</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static "css/default_style.css" %}">
+</head>
+<body>
+<h1>Оцените степень влияния внутренних факторов на внешние.</h1>
+<h2>Оценка может составлять от -5 до 5. Незаполненные значения будут занулены.</h2>
+{% load custom_tags %}
+<form method="post" action="/result_out/">
+    {% csrf_token %}
+    <table id="final_matrix">
+        <tr>
+            <td rowspan="2" colspan="2" class="header">Внутренние факторы</td>
+            <td colspan="{{ ot_weights_len }}" class="header">Внешние факторы</td>
+        </tr>
+        <tr>
+            <td colspan="{{ o_weights_len }}" class="header">Возможности</td>
+            <td colspan="{{ t_weights_len }}" class="header">Угрозы</td>
+        </tr>
+        <tr>
+            <td rowspan="2">Характеристика</td>
+            <td rowspan="2">Оценка с учетом смежного влияния</td>
+            {% for o in o_weights %}
+                <td colspan="1">{{ o }}</td>
+            {% endfor %}
+            {% for t in t_weights %}
+                <td colspan="1">{{ t }}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for o in o_weights %}
+                <td>Влияние</td>
+            {% endfor %}
+            {% for t in t_weights %}
+                <td>Влияние</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <td colspan="{{ 2 }}" class="empty">Сильные стороны</td>
+            <td colspan="{{ ot_weights_len }}" class="header"></td>
+        </tr>
+        {% for s in s_weights %}
+            <tr>
+                <td>{{ s }}</td>
+                <td>{{ s_eval|list_index:forloop.counter0 }}</td>
+                {% for o in o_weights %}
+                    <td><input type="select" size="1" list="weights" name="Oinf{{ forloop.counter }}"></td>
+                {% endfor %}
+                {% for t in t_weights %}
+                    <td><input type="select" size="1" list="weights" name="Tinf{{ forloop.counter }}"></td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="{{ 2 }}" class="empty">Слабые стороны</td>
+            <td colspan="{{ ot_weights_len }}" class="header"></td>
+        </tr>
+        {% for w in w_weights %}
+            <tr>
+                <td>{{ w }}</td>
+                <td>{{ w_eval|list_index:forloop.counter0 }}</td>
+                {% for o in o_weights %}
+                    <td><input type="select" size="1" list="weights" name="Oinf{{ forloop.counter }}"></td>
+                {% endfor %}
+                {% for t in t_weights %}
+                    <td><input type="select" size="1" list="weights" name="Tinf{{ forloop.counter }}"></td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+       <tr>
+           <td colspan="2" class="empty">Вероятность внешнего фактора</td>
+           {% for pos in pos_eval %}
+                <td class="empty">{{ pos }}</td>
+           {% endfor %}
+       </tr>
+    </table>
+    <div>
+        <h2>Оценка принимает положительное значение, если внутренний фактор может усилить эффект внешнего фактора.<br>Оценка принимает отрицательное значение, если внутренний фактор может ослабить эффект внешнего фактора. </h2>
+        <h2> </h2>
+        <input class="submit_btn" name="finish" type="submit" value="Провести анализ">
+    </div>
+    <datalist id="weights">
+        <option value="5">5</option>
+        <option value="4">4</option>
+        <option value="3">3</option>
+        <option value="2">2</option>
+        <option value="1">1</option>
+        <option value="0">0</option>
+        <option value="-1">-1</option>
+        <option value="-2">-2</option>
+        <option value="-3">-3</option>
+        <option value="-4">-4</option>
+        <option value="-5">-5</option>
+    </datalist>
+</form>
+<script>
+    var o_length = {{o_weights|safe}}.length;
+    var t_length = {{t_weights|safe}}.length;
+    var sw_weights_len = {{ sw_weights_len }}
+
+    var OinfInputs = [];
+    var TinfInputs = [];
+
+    var preset_5p_values = JSON.parse('{{ preset_5p_values_json|safe }}');
+
+    for (i = 0; i < o_length; i++) {
+        OinfInputs[i] = document.getElementsByName(`Oinf${i + 1}`);
+        
+        for (j = 0; j < sw_weights_len; j++){
+            OinfInputs[i][j].value = preset_5p_values['Oinf'][0];
+            preset_5p_values['Oinf'].shift();
+            if (OinfInputs[i][j].value == "undefined") {
+                OinfInputs[i][j].value = '';
+            }
+        }
+    }
+
+    for (i = 0; i < t_length; i++) {
+        TinfInputs[i] = document.getElementsByName(`Tinf${i + 1}`);
+        for (j = 0; j < sw_weights_len; j++){
+            TinfInputs[i][j].value = preset_5p_values['Tinf'][0];
+            preset_5p_values['Tinf'].shift();
+            if (TinfInputs[i][j].value == "undefined") {
+                TinfInputs[i][j].value = '';
+            }
+        }
+    }
+
+</script>
+</body>
+</html>

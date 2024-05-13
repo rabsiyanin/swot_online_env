@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SWOT analysis info</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static "css/login_style.css" %}">
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const submitButton = document.getElementById("submit_btn");
+            const sessionUUID = document.getElementById("session_uuid");
+            const sessionKeyword = document.getElementById("session_keyword");
+
+            function toggleButtonState() {
+                if (sessionUUID.value.trim() !== "" && sessionKeyword.value.trim() !== "") {
+                    submitButton.disabled = false;
+                } else {
+                    submitButton.disabled = true; 
+                }
+            }
+            sessionUUID.addEventListener("input", toggleButtonState);
+            sessionKeyword.addEventListener("input", toggleButtonState);
+        });
+    </script>
+</head>
+<body>
+<div class="info">
+    <form method="post" action="{% url 'validate_session' %}">
+        {% csrf_token %}
+        <div>
+            <h1 for="session_uuid">UUID комнаты:</h1>
+            <input class="Winp" type="text" id="session_uuid" name="session_uuid" required>
+        </div>
+        <div>
+            <h1 for="session_keyword">Ключевое слово комнаты:</h1>
+            <input class="Winp" type="password" id="session_keyword" name="session_keyword" required>
+        </div>
+        <div>
+            <label > </label>
+            <h1></h1>
+        </div>
+        <button id="submit_btn" class="submit_btn" disabled>Подтвердить</button>
+    </form>
+
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="{{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+</div>
+</body>
+</html>

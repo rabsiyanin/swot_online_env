@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Perform Quantitative SWOT Analysis</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static "css/login_style.css" %}">
+</head>
+<body>
+<div class="homepage">
+    <h1>Онлайн-среда для выполнения количественного SWOT-анализа на базе AES-256</h1>
+    <video id="background-video" loop muted autoplay class="back-video">
+        <source src="{% static 'css/videos/videoplayback_yv2b2SC5.mp4' %}" type="video/mp4">
+    </video>
+    <table>
+        <tr>
+            <td>
+                <form method="get" action="/factor_matrix">
+                    <button class="submit_btn">Ввести факторы</button>
+                </form>
+            </td>
+            <td>
+                <form method="post" action="/session_login/">
+                     {% csrf_token %}
+                    <button id="info_btn" class="submit_btn">Войти в комнату</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

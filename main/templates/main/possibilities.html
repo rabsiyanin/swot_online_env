@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Perform Quantitative SWOT Analysis</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static "css/default_style.css" %}">
+</head>
+<body>
+<h1>Оцените вероятность возникновения каждого из факторов внешней среды.</h1>
+<h2>Оценка вероятности может принимать значение десятичной дроби от 0 до 1. Незаполненные значения будут приравнены к 1.</h2>
+{% load custom_tags %}
+<form method="post" action="/result/">
+    {% csrf_token %}
+    <table id="synergy_matrix">
+        <tr>
+            <td class="header">Фактор</td>
+            <td class="header">Вероятность появления фактора</td>
+        </tr>
+        {% for key in weights %}
+            <tr>
+                <td class="factor">{{ key }}</td>
+                <td><input type="select" size="1" list="weights" name="pos"></td>
+            </tr>
+        {% endfor %}
+    </table>
+    <div>
+        <input class="submit_btn" name="finish" type="submit" value="Продолжить анализ">
+    </div>
+</form>
+<script>
+    var preset_4p_values = {{ preset_4p_values_json|safe }};
+    document.addEventListener("DOMContentLoaded", function() {
+        const inputs = document.querySelectorAll('input[type="select"]');
+        for (let i = 0; i < inputs.length; i++) {
+            inputs[i].value = preset_4p_values["preset_4p_values"][i];
+            if (inputs[i].value == "undefined") {
+                        inputs[i].value = '';
+                    }
+        }
+    });
+</script>
+</body>
+</html>

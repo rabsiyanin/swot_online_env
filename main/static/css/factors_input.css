@@ -1,0 +1,187 @@
+body {
+    width: 100%;
+    height: 50%;
+    padding: 0;
+    margin: 0;
+    background: #0c0c0c;
+}
+
+@font-face {
+    font-family: 'Helvetica Regular';
+    src: url('fonts/helvetica_regular.otf') format('opentype');
+}
+@font-face {
+    font-family: 'Helvetica Light';
+    src: url('fonts/helvetica_light.otf') format('opentype');
+}
+
+h1 {
+    text-align: center;
+    color: #fff;
+    font-family: 'Helvetica Regular';
+}
+
+.messages {
+    font-family: 'Helvetica Regular';
+    font-weight: bold;
+    color: red;
+    margin-left: 5%;
+    width: 90%;
+}
+
+div {
+    display: table-cell;
+    position: absolute;
+    margin: auto;
+    width: 100%;
+    text-align: center;
+    color: rgb(48, 59, 64);
+}
+
+table {
+    width: 100%;
+    padding-right: 60px;
+    padding-left: 60px;
+    font-family: 'Helvetica Regular';
+    font-weight: bold;
+}
+
+table td {
+    padding-top: 0px;
+}
+
+table td:first-child {
+    padding-right: 15px;
+}
+
+.field_content table {
+    padding-left: 10px;
+    padding-right: 25px;
+}
+
+.field_content table td:first-child{
+    width: 90%;
+    position: relative;
+    padding-right: 40px;
+}
+
+.field_content table td{
+    padding-top: 5px;
+    padding-bottom: 15px;
+}
+
+.field_content .I {
+    width: 100%;
+    border-radius: 1px;
+    margin-right: 15px;
+    padding: 5px;
+    border: 3px solid rgb(67, 67, 67);
+    outline: 0;
+    font-family: 'Helvetica Regular';
+    font-size: 1.6rem;
+    color: white;
+    background: transparent;
+    transition: border-color 0.2s;
+}
+
+.field_content .R {
+    width: 120%;
+    border-radius: 1px;
+    margin-right: 15px;
+    padding: 5px;
+    border: 3px solid rgb(67, 67, 67);
+    outline: 0;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.6rem;
+    color: white;
+    background: #111111;
+    transition: border-color 0.2s;
+}
+
+::placeholder {
+    color: gray;
+    font-size: 1.3rem;
+    cursor: text;
+}
+
+.field_content .I:focus{
+    padding-bottom: 5px;
+    border-width: 3px;
+    border-image: linear-gradient(to right, #707070,#707070);
+    border-image-slice: 1;
+}
+
+.field_content .R{
+    width: 100%;
+    text-align: center;
+}
+
+.field_content .R:focus{
+    padding-bottom: 5px;
+    border-width: 3px;
+    border-image: linear-gradient(to right, #707070,#707070);
+    border-image-slice: 1;
+}
+
+
+
+.R {
+    width: 20%;
+}
+
+.R:focus {
+    outline: none;
+}
+
+fieldset {
+    background: #111111;
+    border: none;
+}
+
+legend {
+    text-align: center;
+
+    padding-top: 34px;
+    font-size: 20px;
+    color: #FFF;
+}
+
+.submit_btn {
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 1px;
+    width: 240px;
+    height: 50px;
+    margin: 0px;
+    border: none;
+    background-color: #111111;
+    font-size: 26px;
+    font-family: 'Helvetica Regular';
+    font-weight: bold;
+    color: #fff;
+}
+
+.newRow {
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 1px;
+    width: 640px;
+    height: 50px;
+    margin: 26px;
+    border: none;
+    background-color: #111111;
+    font-size: 26px;
+    font-family: 'Helvetica Regular';
+    font-weight: bold;
+    color: #fff;
+}
+
+.submit_btn:hover {
+    background-color: #0f0f0f;
+}
+
+datalist {
+    display: flex;
+    justify-content: space-between;
+    color: #fff;
+}

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Perform Quantitative SWOT Analysis</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static "css/factors_input.css" %}">
+</head>
+<body>
+<h1>Онлайн-среда для количественного SWOT-анализа</h1>
+{% if messages %}
+    {% for message in messages %}
+        <p class="messages">{{ message }}</p>
+    {% endfor %}
+{% endif %}
+<form method="post" action="/sw_impact/">
+    {% csrf_token %}
+    <table id="input_matrix">
+    <tr class="matrix_row">
+        <td class="input_matrix_quater">
+            <fieldset class="field_content">
+                <legend>СИЛЬНЫЕ СТОРОНЫ</legend>
+                <table id="strong_sides_table">
+                    <tr>
+                        <td>
+                            <textarea class="I" style="resize: none;" name="S_1" placeholder="Фактор сильной стороны" rows="2" autocomplete="off"></textarea>
+                        </td>
+                        <td>
+                            <input class="R" list="so_weights" max="3" min="0" name="RS_1" type="text" placeholder="Вес" autocomplete="off">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <textarea class="I" style="resize: none;" name="S_2" placeholder="Фактор сильной стороны" autocomplete="off"></textarea>
+                        </td>
+                        <td>
+                            <input class="R" list="so_weights" max="3" min="0" name="RS_2" type="text" placeholder="Вес" autocomplete="off">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <textarea class="I" style="resize: none;" name="S_3" placeholder="Фактор сильной стороны" autocomplete="off"></textarea>
+                        </td>
+                        <td>
+                            <input class="R" list="so_weights" max="3" min="0" name="RS_3" type="text" placeholder="Вес" autocomplete="off">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <textarea class="I" style="resize: none;" name="S_4" placeholder="Фактор сильной стороны" autocomplete="off"></textarea>
+                        </td>
+                        <td>
+                            <input class="R" list="so_weights" max="3" min="0" name="RS_4" type="text" placeholder="Вес" autocomplete="off">
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        </td>
+        <td class="input_matrix_quater">
+            <fieldset class="field_content">
+                <legend>СЛАБЫЕ СТОРОНЫ</legend>
+                <table id="weak_sides_table">
+                    <tr>
+                        <td>
+                            <textarea class="I" style="resize: none;" name="W_1" placeholder="Фактор слабой стороны" autocomplete="off"></textarea>
+                        </td>
+                        <td>
+                            <input class="R" list="wt_weights" max="0" min="-3" name="RW_1" type="text" placeholder="Вес" autocomplete="off">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <textarea class="I" style="resize: none;" name="W_2" placeholder="Фактор слабой стороны" autocomplete="off"></textarea>
+                        </td>
+                        <td>
+                            <input class="R" list="wt_weights" max="0" min="-3" name="RW_2" type="text" placeholder="Вес" autocomplete="off">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <textarea class="I" style="resize: none;" name="W_3" placeholder="Фактор слабой стороны" autocomplete="off"></textarea>
+                        </td>
+                        <td>
+                            <input class="R" list="wt_weights" max="0" min="-3" name="RW_3" type="text" placeholder="Вес" autocomplete="off">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <textarea class="I" style="resize: none;" name="W_4" placeholder="Фактор слабой стороны" autocomplete="off"></textarea>
+                        </td>
+                        <td>
+                            <input class="R" list="wt_weights" max="0" min="-3" name="RW_4" type="text" placeholder="Вес" autocomplete="off">
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        </td>
+    </tr>
+        <tr class="matrix_row">
+        <td class="input_matrix_quater">
+            <fieldset class="field_content">
+                <legend>ВОЗМОЖНОСТИ</legend>
+                <table id="opportunities_table">
+                    <tr>
+                        <td>
+                            <textarea class="I" style="resize: none;" name="O_1" placeholder="Фактор потенциальной возможности" autocomplete="off"></textarea>
+                        </td>
+                        <td>
+                            <input class="R" list="so_weights" max="3" min="0" name="RO_1" type="text" placeholder="Вес" autocomplete="off">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <textarea class="I" style="resize: none;" name="O_2" placeholder="Фактор потенциальной возможности" autocomplete="off"></textarea>
+                        </td>
+                        <td>
+                            <input class="R" list="so_weights" max="3" min="0" name="RO_2" type="text" placeholder="Вес" autocomplete="off">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <textarea class="I" style="resize: none;" name="O_3" placeholder="Фактор потенциальной возможности" autocomplete="off"></textarea>
+                        </td>
+                        <td>
+                            <input class="R" list="so_weights" max="3" min="0" name="RO_3" type="text" placeholder="Вес" autocomplete="off">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <textarea class="I" style="resize: none;" name="O_4" placeholder="Фактор потенциальной возможности" autocomplete="off"></textarea>
+                        </td>
+                        <td>
+                            <input class="R" list="so_weights" max="3" min="0" name="RO_4" type="text" placeholder="Вес" autocomplete="off">
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        </td>
+        <td class="input_matrix_quater">
+            <fieldset class="field_content">
+                <legend>УГРОЗЫ</legend>
+                <table id="threats_table">
+                    <tr>
+                        <td>
+                            <textarea class="I" style="resize: none;" name="T_1" placeholder="Фактор потенциальной угрозы" autocomplete="off"></textarea>
+                        </td>
+                        <td>
+                            <input class="R" list="wt_weights" max="0" min="-3" name="RT_1" type="text" placeholder="Вес" autocomplete="off">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <textarea class="I" style="resize: none;" name="T_2" placeholder="Фактор потенциальной угрозы" autocomplete="off"></textarea>
+                        </td>
+                        <td>
+                            <input class="R" list="wt_weights" max="0" min="-3" name="RT_2" type="text" placeholder="Вес" autocomplete="off">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <textarea class="I" style="resize: none;" name="T_3" placeholder="Фактор потенциальной угрозы" autocomplete="off"></textarea>
+                        </td>
+                        <td>
+                            <input class="R" list="wt_weights" max="0" min="-3" name="RT_3" type="text" placeholder="Вес" autocomplete="off">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <textarea class="I" style="resize: none;" name="T_4" placeholder="Фактор потенциальной угрозы" autocomplete="off"></textarea>
+                        </td>
+                        <td>
+                            <input class="R" list="wt_weights" max="0" min="-3" name="RT_4" type="text" placeholder="Вес" autocomplete="off">
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        </td>
+    </tr>
+</table>
+    <div>
+        <button class="newRow" type="button" onclick="addRows()">Добавить ещё один фактор к каждой группе</button>
+        <input class="submit_btn" name="finish" type="submit" value="Провести анализ" autocomplete="off">
+    </div>
+</form>
+<script>
+function addRows() {
+    var table = document.getElementById("strong_sides_table");
+    var row = table.insertRow(-1);
+    var cell1 = row.insertCell(0);
+    var cell2 = row.insertCell(1);
+    var totalRows = table.rows.length;
+    cell1.innerHTML = '<textarea class="I" style="resize: none;" style="resize: none;" name="S_' + totalRows + '" type="text" placeholder="Фактор сильной стороны" autocomplete="off">';
+    cell2.innerHTML = '<input class="R" list="so_weights" max="3" min="0" name="RS_' + totalRows + '" type="text" placeholder="Вес" autocomplete="off">';
+
+    var table = document.getElementById("weak_sides_table");
+    var row = table.insertRow(-1);
+    var cell1 = row.insertCell(0);
+    var cell2 = row.insertCell(1);
+    var totalRows = table.rows.length;
+
+    cell1.innerHTML = '<textarea class="I" style="resize: none;" style="resize: none;" name="W_' + totalRows + '" type="text" placeholder="Фактор слабой стороны" autocomplete="off">';
+    cell2.innerHTML = '<input class="R" list="wt_weights" max="0" min="-3" name="RW_' + totalRows + '" type="text" placeholder="Вес" autocomplete="off">';
+
+    var table = document.getElementById("opportunities_table");
+    var row = table.insertRow(-1);
+    var cell1 = row.insertCell(0);
+    var cell2 = row.insertCell(1);
+    var totalRows = table.rows.length;
+
+    cell1.innerHTML = '<textarea class="I" style="resize: none;" style="resize: none;" name="O_' + totalRows + '" type="text" placeholder="Фактор потенциальной возможности" autocomplete="off">';
+    cell2.innerHTML = '<input class="R" list="so_weights" max="3" min="0" name="RO_' + totalRows + '" type="text" placeholder="Вес" autocomplete="off">';
+
+    var table = document.getElementById("threats_table");
+    var row = table.insertRow(-1);
+    var cell1 = row.insertCell(0);
+    var cell2 = row.insertCell(1);
+    var totalRows = table.rows.length;
+
+    cell1.innerHTML = '<textarea class="I" style="resize: none;" style="resize: none;" name="T_' + totalRows + '" type="text" placeholder="Фактор потенциальной угрозы" autocomplete="off">';
+    cell2.innerHTML = '<input class="R" list="wt_weights" max="0" min="-3" name="RT_' + totalRows + '" type="text" placeholder="Вес" autocomplete="off">';
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    var extra_factors = "{{ extra_factors | safe }}";
+    for (var i = 0; i < extra_factors; i++) {
+        addRows();
+    } 
+
+
+    var preset_factors = {{ preset_factors | safe }};
+    var preset_weights = {{ preset_weights | safe }};
+
+
+    var input_factors = document.querySelectorAll('textarea[name^="S_"]');
+    var input_weights = document.querySelectorAll('input[name^="RS_"]');
+    for (var i = 0; i < input_factors.length; i++) {
+        if (preset_factors['input_s'][i]) {
+            input_factors[i].value = preset_factors['input_s'][i];
+        }
+        if (preset_weights['input_s_r'][i]) {
+            input_weights[i].value = preset_weights['input_s_r'][i];
+        }
+    }
+
+
+    var input_factors = document.querySelectorAll('textarea[name^="W_"]');
+    var input_weights = document.querySelectorAll('input[name^="RW_"]');
+    for (var i = 0; i < input_factors.length; i++) {
+        if (preset_factors['input_w'][i]) {
+            input_factors[i].value = preset_factors['input_w'][i];
+        }
+        if (preset_weights['input_w_r'][i]) {
+            input_weights[i].value = preset_weights['input_w_r'][i];
+        }
+    }
+
+    var input_factors = document.querySelectorAll('textarea[name^="O_"]');
+    var input_weights = document.querySelectorAll('input[name^="RO_"]');
+    for (var i = 0; i < input_factors.length; i++) {
+        if (preset_factors['input_o'][i]) {
+            input_factors[i].value = preset_factors['input_o'][i];
+        }
+        if (preset_weights['input_o_r'][i]) {
+            input_weights[i].value = preset_weights['input_o_r'][i];
+        }
+    }
+
+    var input_factors = document.querySelectorAll('textarea[name^="T_"]');
+    var input_weights = document.querySelectorAll('input[name^="RT_"]');
+    for (var i = 0; i < input_factors.length; i++) {
+        if (preset_factors['input_t'][i]) {
+            input_factors[i].value = preset_factors['input_t'][i];
+        }
+        if (preset_weights['input_t_r'][i]) {
+            input_weights[i].value = preset_weights['input_t_r'][i];
+        }
+    }
+});
+</script>
+<datalist id="so_weights" class="sliderticks">
+    <option value="5"></option>
+    <option value="4"></option>
+    <option value="3">
+    <option value="2">
+    <option value="1">
+    <option value="0">
+</datalist>
+<datalist id="wt_weights" class="sliderticks">
+    <option value="0">
+    <option value="-1">
+    <option value="-2">
+    <option value="-3">
+    <option value="-4">
+    <option value="-5">
+</datalist>
+</body>
+</html>

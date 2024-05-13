@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Perform Quantitative SWOT Analysis</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static "css/default_style.css" %}">
+</head>
+<body>
+<h1>Результаты оценки степеней влияния внутренних факторов на внешние:</h1>
+{% load custom_tags %}
+<form method="post" action="/session_login/">
+    {% csrf_token %}
+    <table id="final_matrix">
+        <tr>
+            <td rowspan="2" colspan="3" class="header">Внутренние факторы</td>
+            <td colspan="{{ ot_weights_len|add:ot_weights_len }}" class="header">Внешние факторы</td>
+        </tr>
+        <tr>
+            <td colspan="{{ o_weights_len|add:o_weights_len }}" class="header">Возможности</td>
+            <td colspan="{{ t_weights_len|add:t_weights_len }}" class="header">Угрозы</td>
+        </tr>
+        <tr>
+            <td rowspan="2" colspan="2" style="font-size: 18px;">Внутренний фактор</td>
+            <td rowspan="2" style="font-size: 18px;">Вес <br>(с учётом оценки смежного влияния)</td>
+            {% for o in o_weights %}
+                <td colspan="2">{{ o }}</td>
+            {% endfor %}
+            {% for t in t_weights %}
+                <td colspan="2">{{ t }}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for o in o_weights %}
+                <td colspan="2" style="font-size: 18px;">Влияние</td>
+            {% endfor %}
+            {% for t in t_weights %}
+                <td colspan="2" style="font-size: 18px;">Влияние</td>
+            {% endfor %}
+        <tr>
+            <td colspan="{{ 3 }}" class="empty">Сильные стороны</td>
+            <td colspan="{{ ot_weights_len|add:ot_weights_len }}" class="header"></td>
+        </tr>
+        {% for key in weights %}
+            {% if s_weights_len == forloop.counter0 %}
+                <tr>
+            <td colspan="{{ 3 }}" class="empty">Слабые стороны</td>
+            <td colspan="{{ ot_weights_len|add:ot_weights_len }}" class="header"></td>
+                </tr>
+            {% endif %}
+            <tr>
+                <td colspan="2" >{{ key }}</td>
+                <td>{{ sw_sums|list_index:forloop.counter0 }}</td>
+                {% for i in pos_eval %}
+                    <td colspan="2">{{ inf|list_index:forloop.counter0|list_index:forloop.parentloop.counter0 }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="3" style="font-size: 18px;" class="empty">Оценка значимости внешнего фактора под влиянием внутренних факторов</td>
+            {% for sum in ot_weights_flattenned %}
+                <td colspan="2" class="empty">{{ sum }}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <td colspan="3" style="font-size: 18px;" class="empty">Оценка значимости внешнего фактора с учетом вероятности</td>
+            {% for pos in pos_eval %}
+                <td colspan="2" class="empty">{{ pos }}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <td colspan="3" class="empty">Итоговая оценка</td>
+            {% for k in final_eval %}
+                <td colspan="2" class="empty">{{ k }}</td>
+            {% endfor %}
+        </tr>
+    </table>
+    <h2></h2>
+    <h2>Визуализация полученных результатов:</h2>
+        <table style="width: 90%">
+            <tr>
+                <td>
+                    <img src="data:image/png;base64,{{ sw_plot }}" alt="Generated Plot" style="width: 95%; margin-right: 1px;">
+                </td>
+                <td>
+                    <img src="data:image/png;base64,{{ ot_plot }}" alt="Generated Plot" style="width: 95%; margin-left: 1px;">
+                </td>
+            </tr>
+        </table>
+        <table style="width: 90%; height: auto; border: 1px solid #0c0c0c; margin-top: 0px">
+            <tr>
+                <td style="vertical-align: top; text-align: left; border: 1px solid #0c0c0c;">
+                    <p> Легенда: </p>
+                    <p>{{ sw_legend|linebreaks }}</p>
+                </td>
+                <td style="vertical-align: top; text-align: left; border: 1px solid #0c0c0c;">
+                    <p> Легенда: </p>
+                    <p>{{ ot_legend|linebreaks }}</p>
+                </td>
+            </tr>
+        </table>        
+    <h2>Данные проведённого анализа можно сохранить. Каждое из введённых значений будет зашифровано.</h2>    
+    <style>
+        .center-container {
+            text-align: center;
+        }
+    </style>
+    <div class="center-container">
+        <button type="button" class="submit_btn" id="saveIntoNewRoom">Сохранить анализ в новую комнату</button>
+        <button type="submit" class="submit_btn" id="saveIntoRoom">Сохранить анализ в текущую комнату</button>
+        <h4 style="margin-bottom: 50px;"> </h4>
+    </div>
+    <div id="inputArea" style="display:none;">
+        <style>
+            .uuid-style {
+                color: rgb(99, 99, 99);
+            }
+        </style>
+        <h4 class="room_info">
+            Уникальный UUID для вашей комнаты: <span class="uuid-style">{{ uuid }}</span><br>
+            Значение этого UUID было скопировано в ваш буфер обмена.
+        </h4>
+        <h4 class="room_info">Осталось создать для этой комнаты пароль:</h4>
+        <input class="submit_btn" type="password" id="userInput">
+        <button type="submit" class = "submit_btn" onclick="submitInput()">Ввести пароль и завершить работу</button>
+        <h4 style="margin-bottom: 50px;"> </h4>
+    </div>
+    <script>
+        var room_uuid = "{{ uuid|escapejs }}";
+        if ("{{ isLoggedIn }}" != "1") {
+            document.getElementById('saveIntoRoom').style.display = 'none';
+        }
+
+        document.getElementById('saveIntoRoom').addEventListener('click', function() {
+            fetch("{% url 'room_handler' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken') 
+                },
+                body: JSON.stringify({ userInput: "", roomUuid: "" })
+            }).then(response => response.json())
+            .then(data => {});
+        });
+
+        document.getElementById('saveIntoNewRoom').addEventListener('click', function() {
+            document.getElementById('saveIntoRoom').style.display = 'none';
+            document.getElementById('inputArea').style.display = 'block';
+            this.style.display = 'none';
+            copyTextToClipboard()
+            scrollToBottom();
+        });
+
+        function submitInput() {
+            var userInputValue = document.getElementById('userInput').value;
+            fetch("{% url 'room_handler' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken') 
+                },
+                body: JSON.stringify({ userInput: userInputValue, roomUuid: room_uuid })
+            }).then(response => response.json())
+            .then(data => {
+                alert("You submitted: " + userInputValue);
+            });
+
+            document.getElementById('userInput').value = '';
+            document.getElementById('inputArea').style.display = 'none';
+            document.getElementById('saveIntoNewRoom').style.display = 'none';
+        }
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        function copyTextToClipboard() {
+            const text = room_uuid;
+            navigator.clipboard.writeText(text).then(function() {
+            }, function(err) {
+            });
+        }
+
+        function scrollToBottom() {
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'smooth'  
+            });
+        }
+        
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+            }
+        });
+    </script>
+</form>
+</body>
+</html>

@@ -1,0 +1,181 @@
+body {
+    width: 100%;
+    height: 50%;
+    padding: 0;
+    margin: 0;
+    background: #0c0c0c;
+}
+
+@font-face {
+    font-family: 'Helvetica Regular';
+    src: url('fonts/helvetica_regular.otf') format('opentype');
+}
+@font-face {
+    font-family: 'Helvetica Light';
+    src: url('fonts/helvetica_light.otf') format('opentype');
+}
+
+div {
+    display: table-cell;
+    position: absolute;
+    margin-top: 20px;
+    width: 100%;
+    text-align: center;
+}
+
+.submit_btn {
+    cursor: pointer;
+    border-radius: 5px;
+    color: white;
+    padding: 12px;
+    margin: 16px;
+    border: 1px;
+    border-color: #fff;
+    background-color: #171717;
+    font-size: 26px;
+    font-family: 'Helvetica Regular';
+    font-weight: bold;
+    color: #fff;
+}
+
+.submit_btn:hover {
+    background-color: #0f0f0f;
+    border: 1px;
+    border-color: #fff;
+}
+
+h1 {
+    text-align: center; 
+    padding-top: 34px;
+    color: #fff;
+    font-family: 'Helvetica Regular';
+    width: 75%;
+    margin: auto;
+}
+
+h2 {
+    text-align: center; 
+    padding-top: 34px;
+    color: #fff;
+    font-family: 'Helvetica Light';
+    width: 75%;
+    font-size: 24px;
+    margin: auto;
+}
+
+
+h4, .intro {
+    color: rgb(48, 48, 48);
+    font-family: 'Helvetica Regular';
+    color: white;
+    margin-left: 5%;
+    width: 90%;
+}
+
+.room_info {
+    color: white;
+    font-size: 24px;
+    font-family: 'Helvetica Light';
+    font-weight: bold;
+    margin-bottom: 0%;
+}
+
+
+.messages {
+    font-family: 'Helvetica Regular';
+    color: white;
+    font-weight: bold;
+    color: red;
+    margin-left: 5%;
+    width: 90%;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.outro {
+    color: rgb(48, 48, 48);
+    font-family: 'Helvetica Regular';
+    color: white;
+    text-align: center;
+    margin: auto;
+    width: 75%;
+    margin-top: 25px;
+}
+
+.outro_thanks {
+    color: rgb(48, 48, 48);
+    font-family: 'Helvetica Regular';
+    color: white;
+    text-align: center;
+    margin: auto;
+    width: 75%;
+    font-weight: bold;
+    margin-top: 40px;
+}
+
+table {
+    width: 90%;
+    height: 400px;
+    margin: auto;
+    margin-top: 25px;
+    table-layout: fixed;
+    text-align: center;
+    color: rgb(48, 48, 48);
+    font-family: 'Helvetica Regular';
+    color: white;
+    font-size: 22.6px;
+    border-collapse: collapse;
+}
+
+td {
+    width: auto;
+    border: 3px solid rgb(48, 48, 48);
+    padding: 0;
+    background: #0c0c0c;
+    overflow: hidden;
+    height: 50px;
+}
+
+td:first-child {
+    width: auto;
+}
+
+.header {
+    background: rgb(28, 28, 28);
+    font-weight: bold;
+}
+
+.factor {
+    background: rgb(23, 23, 23);
+}
+
+.empty {
+    background: #131313;
+}
+
+input[type="select"] {
+    width: 60px;
+    padding: 10px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #000;
+    border: 1px solid #333;
+    border-radius: 5px;
+}
+
+input[type="select"]:focus {
+    outline: none;
+}
+
+input[class="create_session_btn"] {
+    width: 400px; 
+    padding: 10px; 
+    font-size: 16px; 
+    color: #fff; 
+    background-color: #000; 
+    border: 1px solid #333; 
+    border-radius: 5px; 
+}
+
